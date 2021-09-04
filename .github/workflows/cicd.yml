@@ -47,7 +47,7 @@ jobs:
       - uses: repo-sync/pull-request@v2
         name: pull-request
         with:
-          destination_branch: "master"
+          destination_branch: "main"
           pr_title: [release] ${{ github.event.release.tag_name }}
           pr_body: "👑 *An automated PR*"
           pr_draft: true
