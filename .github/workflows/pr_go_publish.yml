@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RUN_NUMBER: ${{ github.run_number }}
+      RELEASE_CHANNEL: "pr-$RUN_NUMBER"
       EXPO_PROJECT: "@daniel_grychtol/eas-cicd"
     steps:
       - uses: actions/checkout@v2
@@ -35,15 +36,15 @@ jobs:
       - name: Install packages
         run: yarn install
       - name: EXPO Publish
-        run: expo publish --non-interactive --release-channel ${{ env.RUN_NUMBER }}
+        run: expo publish --non-interactive --release-channel ${{ env.RELEASE_CHANNEL }}
       - name: Add Comment To PR
         uses: mshick/add-pr-comment@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: |
-            ## 🚀 📲 Application preview:
+            ## 🚀 📲 Application preview
             ### Scan with your mobile:
-            ![Expo QR](https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=exp://exp.host/${{ env.EXPO_PROJECT }}?release-channel=${{ env.RUN_NUMBER }})
-            ### or visit this link:
-            Published to https://exp.host/${{ env.EXPO_PROJECT }}?release-channel=${{ env.RUN_NUMBER }}
+            ![Expo QR](https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=exp://exp.host/${{ env.EXPO_PROJECT }}?release-channel=${{ env.RELEASE_CHANNEL }})
+            ### or:
+            Published to https://exp.host/${{ env.EXPO_PROJECT }}?release-channel=${{ env.RELEASE_CHANNEL }}
