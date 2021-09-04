@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RUN_NUMBER: ${{ github.run_number }}
-      RELEASE_CHANNEL: "pr-${{ env.RUN_NUMBER }}"
+      RELEASE_CHANNEL: "pr-${{ github.run_number }}"
       EXPO_PROJECT: "@daniel_grychtol/eas-cicd"
     steps:
       - uses: actions/checkout@v2
