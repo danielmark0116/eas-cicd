@@ -7,7 +7,7 @@ jobs:
     name: Push to Expo Go on Pull Requests
     runs-on: ubuntu-latest
     env:
-      PR_BRANCH: ${{ GITHUB_REF#refs/heads/ }}
+      PR_BRANCH: ${GITHUB_REF#refs/heads/}
       EXPO_PROJECT: "@daniel_grychtol/eas-cicd"
     steps:
       - uses: actions/checkout@v2
