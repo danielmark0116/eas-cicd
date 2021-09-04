@@ -9,7 +9,7 @@ sedi () {
   fi
 }
 
-echo "Bumping buildNumber and versionCode"
+echo "Bumping buildNumber and versionCode (iOS & Android)"
 
 for entry in `awk '/versionCode/ {print $2}' ./app.json`; do
     currentVersionCode=`echo ${entry%?}`
