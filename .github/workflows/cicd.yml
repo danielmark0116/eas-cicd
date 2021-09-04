@@ -35,6 +35,8 @@ jobs:
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+          expo-cache: true
+          expo-version: 4.x
       - name: Install packages
         run: yarn install
       - name: Bump buildNumber and versionCode
@@ -55,3 +57,6 @@ jobs:
           pr_body: "🚀 Automated PR - build number and version code bump 🚀"
           pr_draft: false
           github_token: ${{ secrets.PAT }}
+      - name: EAS-triggered build
+        # android | ios | all
+        run: npx eas-cli build --platform android --non-interactive
