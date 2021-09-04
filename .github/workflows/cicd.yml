@@ -37,7 +37,7 @@ jobs:
       - name: Install packages
         run: yarn install
       - name: Bump buildNumber and versionCode
-        run: ./bin/build_number_version_code_bumper.sh
+        run: ./bin/bumper.sh
       - name: Add and commit
         run: |
           git checkout -b release-branch-${{ github.event.release.tag_name }}
