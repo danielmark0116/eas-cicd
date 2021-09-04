@@ -7,7 +7,6 @@
 - [ ] eas-cli installed on your local machine
 - [ ] EAS Priority Plan active on your expo account
 - [ ] being logged in to expo in your shell
-- [ ] Github's PAT
 - [ ] Expo's access token
 
 ## Walkthrough
@@ -19,7 +18,11 @@
 ```bash
 EXPO_APPLE_APP_SPECIFIC_PASSWORD=X   ASP generated on your apple id account
 EXPO_TOKEN=X			     EXPO token generated on expo.io
-PAT=X				     Personal access token form GitHub (generate one from within settings tab)
 ```
 
-4.
+4. The workflow will bump the `versionCode` and `buildNumber` values from `app.json` automatically by one and create a PR with changes
+5. The version is being overwritten in `app.config.js`. The value is derived from version tag. **remember to correctly name the tag -> 0.0.1 / 1.1.2 / 2.0.0 -> only digits with a dot inbetween the characters.**
+
+## App preview in Expo Go on each PR
+
+- Each pull request will trigger a job that publishes the changes in expo go at a separate release channel. The release channel name is derived from the branch name
