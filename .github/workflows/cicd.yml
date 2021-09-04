@@ -44,7 +44,7 @@ jobs:
           git status
           git add app.json
           git commit -m "Update app.json"
-      - name: pull-request
+      - name: PR
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
