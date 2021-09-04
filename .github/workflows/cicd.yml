@@ -44,6 +44,7 @@ jobs:
           git status
           git add app.json
           git commit -m "Update app.json"
+          git push origin release-branch-${{ github.event.release.tag_name }}
       - name: PR
         uses: repo-sync/pull-request@v2
         with:
