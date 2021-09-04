@@ -1,0 +1,54 @@
+name: EAS build and upload
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  build:
+    name: Create new build and upload to stores
+    runs-on: ubuntu-latest
+    env:
+      APP_VERSION: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          git config user.name Daniel Grychtoł
+          git config user.email grychtol.daniel@gmail.com
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install YARN
+        run: npm -g install yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-i
+      - uses: expo/expo-github-action@v6
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install packages
+        run: yarn install
+      - name: Bump buildNumber and versionCode
+        run: ./bin/build_number_version_code_bumper.sh
+      - name: Add and commit
+        run: |
+          git checkout -b release-branch-${{ github.event.release.tag_name }}
+          git status
+          git add app.json
+          git commit -m "Update app.json"
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          pr_title: [release] ${{ github.event.release.tag_name }}
+          pr_body: "👑 *An automated PR*"
+          pr_draft: true
+          github_token: ${{ secrets.PAT }}
