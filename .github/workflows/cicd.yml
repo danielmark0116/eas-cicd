@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_VERSION: ${{ github.event.release.tag_name }}
+      RELEASE_BRANCH: release-${{ github.event.release.tag_name }}
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -40,17 +41,17 @@ jobs:
         run: ./bin/bumper.sh
       - name: Add and commit
         run: |
-          git checkout -b release-branch-${{ github.event.release.tag_name }}
+          git checkout -b ${{ env.RELEASE_BRANCH }}
           git status
           git add app.json
           git commit -m "Update app.json"
-          git push origin release-branch-${{ github.event.release.tag_name }}
+          git push origin ${{ env.RELEASE_BRANCH }}
       - name: PR
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "main"
-          source_branch: release-branch-${{ github.event.release.tag_name }}
+          source_branch: ${{ env.RELEASE_BRANCH }}
           pr_title: "[release] ${{ github.event.release.tag_name }}"
-          pr_body: "👑 *An automated PR*"
-          pr_draft: true
+          pr_body: "🚀 Automated PR - build number and version code bump 🚀"
+          pr_draft: false
           github_token: ${{ secrets.PAT }}
