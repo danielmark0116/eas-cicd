@@ -14,7 +14,7 @@ echo "Bumping buildNumber and versionCode"
 for entry in `awk '/versionCode/ {print $2}' ./app.json`; do
     currentVersionCode=`echo ${entry%?}`
     
-    echo "$currentVersionCode"
+    echo "For Android: $currentVersionCode"
 
     regex='^[0-9]+$'
     if [[ $currentVersionCode =~ $regex ]] ; then
@@ -26,7 +26,7 @@ done
 for entry in `awk '/buildNumber/ {print $2}' ./app.json`; do
     currentBuildNumber=`echo ${entry%?} | tr -d \"`
 
-    echo "$currentBuildNumber"
+    echo "For iOS: $currentBuildNumber"
 
     regex='^[0-9]+$'
     if [[ $currentBuildNumber =~ $regex ]] ; then
