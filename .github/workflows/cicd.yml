@@ -11,6 +11,7 @@ jobs:
     env:
       APP_VERSION: ${{ github.event.release.tag_name }}
       RELEASE_BRANCH: release-${{ github.event.release.tag_name }}
+      EXPO_APPLE_APP_SPECIFIC_PASSWORD: "1234"
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -58,5 +59,9 @@ jobs:
           pr_draft: false
           github_token: ${{ secrets.PAT }}
       - name: EAS-triggered build
-        # android | ios | all
+        # android | ios | all (went with android cuz of no private apple developer account available)
         run: npx eas-cli build --platform android --non-interactive
+      - name: Upload to Google Store with EAS
+        run: eas submit -p android --latest --key=/path/to/google-services.json
+      - name: Upload to App Store Connect with EAS
+        run: eas submit -p ios --latest --apple-id=user@example.com --asc-app-id=1234567890
