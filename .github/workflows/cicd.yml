@@ -45,7 +45,6 @@ jobs:
       - name: Add and commit
         run: |
           git checkout -b ${{ env.RELEASE_BRANCH }}
-          git status
           git add app.json
           git commit -m "Update app.json"
           git push origin ${{ env.RELEASE_BRANCH }}
@@ -57,11 +56,11 @@ jobs:
           pr_title: "[release] ${{ github.event.release.tag_name }}"
           pr_body: "🚀 Automated PR - build number and version code bump 🚀"
           pr_draft: false
-          github_token: ${{ secrets.PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: EAS-triggered build
         # android | ios | all (went with android cuz of no private apple developer account available)
         run: npx eas-cli build --platform android --non-interactive
-      - name: Upload to Google Store with EAS
-        run: eas submit -p android --latest --key=/path/to/google-services.json
-      - name: Upload to App Store Connect with EAS
-        run: eas submit -p ios --latest --apple-id=user@example.com --asc-app-id=1234567890
+      # - name: Upload to Google Store with EAS
+      #   run: eas submit -p android --latest --key=/path/to/google-services.json
+      # - name: Upload to App Store Connect with EAS
+      #   run: eas submit -p ios --latest --apple-id=user@example.com --asc-app-id=1234567890
